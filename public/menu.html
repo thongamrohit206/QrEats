@@ -1,66 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu</title>
-<link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <div class="navbar">
-    <div class="brand" id="shopName">QR<span>Eats</span></div>
-  </div>
-
-  <div class="container" style="padding-bottom:100px;">
-    <div class="card" style="margin-bottom:16px;">
-      <label>Table Number (optional)</label>
-      <input type="text" id="tableNo" placeholder="e.g. T-5">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="brand" id="shopName">QR<span>Eats</span></div>
     </div>
 
-    <div id="categoriesContainer"></div>
-  </div>
-
-  <div class="cart-bar" id="cartBar" style="display:none;">
-    <div>🛒 <span id="cartCount">0</span> items · ₹<span id="cartTotal">0</span></div>
-    <button class="btn" id="viewCartBtn">View Cart</button>
-  </div>
-
-  <!-- Cart / Checkout Modal -->
-  <div class="modal-overlay" id="cartModal" style="display:none;">
-    <div class="modal-box">
-      <h3>Your Order</h3>
-      <div id="cartItemsList"></div>
-      <hr>
-      <label>Your Name (optional)</label>
-      <input type="text" id="customerName" placeholder="e.g. Rahul">
-
-      <label>Phone Number (optional)</label>
-      <input type="text" id="customerPhone" placeholder="For order updates">
-
-      <label>Comments / Special Requests</label>
-      <textarea id="comments" rows="2" placeholder="e.g. less spicy, no onions, extra napkins..."></textarea>
-
-      <label>Payment Method</label>
-      <select id="paymentMethod">
-        <option value="upi">UPI</option>
-        <option value="card">Card</option>
-        <option value="cash">Pay at Counter (Cash)</option>
-      </select>
-
-      <div style="display:flex; justify-content:space-between; margin: 14px 0; font-weight:700;">
-        <span>Total</span>
-        <span>₹<span id="modalTotal">0</span></span>
+    <div class="container" style="padding-bottom: 100px">
+      <div class="card" style="margin-bottom: 16px">
+        <label>Table Number (optional)</label>
+        <input type="text" id="tableNo" placeholder="e.g. T-5" />
       </div>
 
-      <div class="error-msg" id="checkoutError"></div>
+      <div id="categoriesContainer"></div>
+    </div>
 
-      <div style="display:flex; gap:10px;">
-        <button class="btn btn-block" id="placeOrderBtn">Pay & Place Order</button>
-        <button class="btn btn-outline btn-block" id="closeCartBtn">Close</button>
+    <div class="cart-bar" id="cartBar" style="display: none">
+      <div>
+        🛒 <span id="cartCount">0</span> items · ₹<span id="cartTotal">0</span>
+      </div>
+      <button class="btn" id="viewCartBtn">View Cart</button>
+    </div>
+
+    <!-- Cart / Checkout Modal -->
+    <div class="modal-overlay" id="cartModal" style="display: none">
+      <div class="modal-box">
+        <h3>Your Order</h3>
+        <div id="cartItemsList"></div>
+        <hr />
+        <label>Your Name (optional)</label>
+        <input type="text" id="customerName" placeholder="e.g. john" />
+
+        <label>Phone Number (optional)</label>
+        <input type="text" id="customerPhone" placeholder="For order updates" />
+
+        <label>Comments / Special Requests</label>
+        <textarea
+          id="comments"
+          rows="2"
+          placeholder="e.g. less spicy, no onions, extra napkins..."
+        ></textarea>
+
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option value="upi">UPI</option>
+          <option value="card">Card</option>
+          <option value="cash">Pay at Counter (Cash)</option>
+        </select>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin: 14px 0;
+            font-weight: 700;
+          "
+        >
+          <span>Total</span>
+          <span>₹<span id="modalTotal">0</span></span>
+        </div>
+
+        <div class="error-msg" id="checkoutError"></div>
+
+        <div style="display: flex; gap: 10px">
+          <button class="btn btn-block" id="placeOrderBtn">
+            Pay & Place Order
+          </button>
+          <button class="btn btn-outline btn-block" id="closeCartBtn">
+            Close
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="/menu.js"></script>
-</body>
+    <script src="/menu.js"></script>
+  </body>
 </html>
