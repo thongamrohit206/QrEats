@@ -64,7 +64,7 @@
 
       const { order, items } = data;
       document.getElementById('orderIdLabel').textContent = order.id;
-      document.getElementById('totalLabel').textContent = order.total.toFixed(2);
+      document.getElementById('totalLabel').textContent = Number(order.total).toFixed(2);
       document.getElementById('commentsLabel').textContent = order.comments ? `📝 Note: ${order.comments}` : '';
 
      document.getElementById('itemsBody').innerHTML = items.map((it) => `
