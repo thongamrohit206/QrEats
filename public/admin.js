@@ -68,7 +68,7 @@ async function loadItems() {
       <div class="body">
         <div class="name">${item.name} ${item.available ? '' : '<span class="badge cancelled">Hidden</span>'}</div>
         <div class="desc">${item.description || ''}</div>
-        <div class="price">₹${item.price.toFixed(2)} · ${item.category}</div>
+        <div class="price">₹${Number(item.price).toFixed(2)} · ${item.category}</div>
         <div class="row-actions">
           <button class="btn btn-sm btn-outline" onclick="editItem('${item.id}')">Edit</button>
           <button class="btn btn-sm" onclick="toggleAvailable('${item.id}', ${item.available})">${item.available ? 'Hide' : 'Show'}</button>
@@ -189,12 +189,23 @@ async function loadOrders() {
       <table style="margin-top:10px;">
         <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
         <tbody>
-          ${order.items.map((it) => `<tr><td>${it.item_name}</td><td>${it.qty}</td><td>₹${it.price.toFixed(2)}</td></tr>`).join('')}
+          ${order.items.map((it) => `
+  <tr>
+    <td>${it.item_name}</td>
+    <td>${it.qty}</td>
+    <td>₹${Number(it.price).toFixed(2)}</td>
+  </tr>
+`).join('')}
         </tbody>
       </table>
       ${order.comments ? `<p style="margin-top:8px;"><strong>Note:</strong> ${order.comments}</p>` : ''}
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-        <strong>Total: ₹${order.total.toFixed(2)} <span style="color:var(--success); font-size:0.8rem;">(${order.payment_status})</span></strong>
+        <strong>
+  Total: ₹${Number(order.total).toFixed(2)}
+  <span style="color:var(--success); font-size:0.8rem;">
+    (${order.payment_status})
+  </span>
+</strong>
         <div class="row-actions">
           ${renderStatusButtons(order)}
         </div>
