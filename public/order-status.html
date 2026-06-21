@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Status</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+  .tracker { display:flex; justify-content:space-between; margin: 30px 0; position:relative; }
+  .tracker::before { content:''; position:absolute; top:14px; left:0; right:0; height:4px; background:#e5e7eb; z-index:0; }
+  .tracker .step { flex:1; text-align:center; position:relative; z-index:1; }
+  .tracker .dot { width:30px; height:30px; border-radius:50%; background:#e5e7eb; color:#fff; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; font-weight:700; }
+  .tracker .step.done .dot { background: var(--success); }
+  .tracker .step.current .dot { background: var(--primary); }
+  .tracker .label { font-size:0.8rem; color:var(--gray); text-transform:capitalize; }
+</style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="brand">QR<span>Eats</span></div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>Order Status</h2>
+      <p style="color:var(--gray);">Order ID: <strong id="orderIdLabel"></strong></p>
+
+      <div class="tracker" id="tracker"></div>
+
+      <div id="cancelledNotice" style="display:none;" class="error-msg">This order has been cancelled.</div>
+
+      <h3>Items</h3>
+      <table id="itemsTable">
+        <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
+        <tbody id="itemsBody"></tbody>
+      </table>
+
+      <div style="display:flex; justify-content:space-between; margin-top:14px; font-weight:700;">
+        <span>Total</span>
+        <span>₹<span id="totalLabel"></span></span>
+      </div>
+
+      <p id="commentsLabel" style="margin-top:10px; color:var(--gray);"></p>
+
+      <div style="margin-top:20px; display:flex; gap:10px;">
+        <a class="btn btn-outline" href="javascript:history.back()">Back to Menu</a>
+        <button class="btn" id="refreshBtn">🔄 Refresh Status</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('orderId');
+    const STEPS = ['placed', 'preparing', 'ready', 'delivered'];
+
+    async function loadOrder() {
+      const res = await fetch(`/api/orders/track/${orderId}`);
+      const data = await res.json();
+      if (!res.ok) {
+        document.querySelector('.card').innerHTML = `<div class="empty-state">⚠️ ${data.error || 'Order not found'}</div>`;
+        return;
+      }
+
+      const { order, items } = data;
+      document.getElementById('orderIdLabel').textContent = order.id;
+      document.getElementById('totalLabel').textContent = order.total.toFixed(2);
+      document.getElementById('commentsLabel').textContent = order.comments ? `📝 Note: ${order.comments}` : '';
+
+      document.getElementById('itemsBody').innerHTML = items.map((it) => `
+        <tr><td>${it.item_name}</td><td>${it.qty}</td><td>₹${it.price.toFixed(2)}</td></tr>
+      `).join('');
+
+      if (order.status === 'cancelled') {
+        document.getElementById('tracker').style.display = 'none';
+        document.getElementById('cancelledNotice').style.display = 'block';
+        return;
+      }
+
+      const currentIdx = STEPS.indexOf(order.status);
+      document.getElementById('tracker').innerHTML = STEPS.map((step, idx) => {
+        let cls = '';
+        if (idx < currentIdx) cls = 'done';
+        if (idx === currentIdx) cls = 'current';
+        return `<div class="step ${cls}"><div class="dot">${idx < currentIdx ? '✓' : idx + 1}</div><div class="label">${step}</div></div>`;
+      }).join('');
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadOrder);
+    setInterval(loadOrder, 10000);
+    loadOrder();
+  </script>
+</body>
+</html>

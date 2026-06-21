@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - QR Food Ordering</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="brand">QR<span>Eats</span> Admin</div>
+    <div>
+      <span class="nav-link" id="shopNameLabel"></span>
+      <a class="nav-link" href="#" id="logoutBtn">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="stat-grid" id="statGrid"></div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3>📲 Your Shop QR Code</h3>
+      <p style="color:var(--gray); font-size:0.9rem;">Print and place this QR code on tables. Customers scan it to view your menu and order.</p>
+      <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:center;">
+        <img id="qrImage" src="" alt="QR Code" style="width:180px; height:180px; border:1px solid #eee; border-radius:8px;">
+        <div>
+          <p><strong>Menu link:</strong></p>
+          <p id="menuUrl" style="word-break:break-all; color:var(--gray); font-size:0.85rem;"></p>
+          <a id="downloadQr" class="btn btn-sm" download="shop-qr.png">Download QR</a>
+          <button class="btn btn-sm btn-outline" id="copyLinkBtn">Copy Link</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="active" data-tab="menu">🍽️ Menu Items</button>
+      <button data-tab="orders">📋 Orders</button>
+    </div>
+
+    <!-- MENU MANAGEMENT TAB -->
+    <div id="menuTab">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2 style="margin:0;">Menu Items</h2>
+        <button class="btn" id="addItemBtn">+ Add Item</button>
+      </div>
+      <div class="grid" id="itemsGrid"></div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div id="ordersTab" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2 style="margin:0;">Incoming Orders</h2>
+        <button class="btn btn-outline" id="refreshOrdersBtn">🔄 Refresh</button>
+      </div>
+      <div class="tabs" id="orderStatusTabs">
+        <button class="active" data-status="">All</button>
+        <button data-status="placed">Placed</button>
+        <button data-status="preparing">Preparing</button>
+        <button data-status="ready">Ready</button>
+        <button data-status="delivered">Delivered</button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+  </div>
+
+  <!-- Add/Edit Item Modal -->
+  <div class="modal-overlay" id="itemModal" style="display:none;">
+    <div class="modal-box">
+      <h3 id="modalTitle">Add Item</h3>
+      <div class="error-msg" id="itemError"></div>
+      <form id="itemForm">
+        <input type="hidden" id="itemId">
+        <label>Item Name</label>
+        <input type="text" id="itemName" required placeholder="e.g. Margherita Pizza">
+
+        <label>Description</label>
+        <textarea id="itemDescription" rows="2" placeholder="Short description"></textarea>
+
+        <label>Category</label>
+        <input type="text" id="itemCategory" placeholder="e.g. Starters, Main Course, Drinks" value="General">
+
+        <label>Price (₹)</label>
+        <input type="number" id="itemPrice" required min="0" step="0.01" placeholder="e.g. 199">
+
+        <label>Photo</label>
+        <input type="file" id="itemPhoto" accept="image/*">
+
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn btn-block">Save Item</button>
+          <button type="button" class="btn btn-outline btn-block" id="cancelItemBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

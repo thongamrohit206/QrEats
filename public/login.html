@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - QR Food Ordering</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <h2>Admin Login</h2>
+      <div class="error-msg" id="errorMsg"></div>
+      <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="owner@example.com">
+
+        <label>Password</label>
+        <input type="password" id="password" required placeholder="Your password">
+
+        <button class="btn btn-block" type="submit">Login</button>
+      </form>
+      <div class="switch-link">Don't have an account? <a href="/signup.html">Sign up here</a></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = '';
+
+      const body = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      };
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Login failed');
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('shop', JSON.stringify(data.shop));
+        window.location.href = '/admin.html';
+      } catch (err) {
+        errorMsg.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>
