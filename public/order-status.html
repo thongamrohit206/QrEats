@@ -67,8 +67,12 @@
       document.getElementById('totalLabel').textContent = order.total.toFixed(2);
       document.getElementById('commentsLabel').textContent = order.comments ? `📝 Note: ${order.comments}` : '';
 
-      document.getElementById('itemsBody').innerHTML = items.map((it) => `
-        <tr><td>${it.item_name}</td><td>${it.qty}</td><td>₹${it.price.toFixed(2)}</td></tr>
+     document.getElementById('itemsBody').innerHTML = items.map((it) => `
+        <tr>
+          <td>${it.item_name}</td>
+          <td>${it.qty}</td>
+          <td>₹${Number(it.price).toFixed(2)}</td>
+        </tr>
       `).join('');
 
       if (order.status === 'cancelled') {
